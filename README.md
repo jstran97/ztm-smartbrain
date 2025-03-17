@@ -7,4 +7,4 @@ Final project for ZTM Web Developer Course
 4. You must add your own API key in the src/App.js file to connect to Clarifai API
 5. Run `npm start`
 
-You can grab Clarifai API key [here](https://www.clarifai.com/)
+You can grab your own Clarifai API key [here](https://www.clarifai.com/)
