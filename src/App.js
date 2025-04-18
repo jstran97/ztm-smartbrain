@@ -1,5 +1,5 @@
 import React from 'react';
-import Clarifai from 'clarifai';
+// import Clarifai from 'clarifai';
 import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo';
 import Rank from './components/Rank/Rank';
@@ -10,68 +10,43 @@ import Register from './components/Register/Register';
 import ParticlesBg from 'particles-bg';
 import './App.css';
 
-
-// const app = new Clarifai.App({
-//   apiKey: '7b2a567388704aeaa71ab2be3f1489ab'
-// });
-// console.log(app);
-
-// const PAT = '65932f832bc947a2953fd5f434062c34';
-// const USER_ID = 'jtran2168';
-// const APP_ID = 'my-first-application-ufu7u';
-
-
-const PAT = '65932f832bc947a2953fd5f434062c34';
-const USER_ID = 'clarifai';
-const APP_ID = 'main';
-
-const MODEL_ID = 'face-detection';
-const MODEL_VERSION_ID = '6dc7e46bc9124c5c8824be4822abe105';
-const IMAGE_URL = 'https://samples.clarifai.com/metro-north.jpg';
-
-const raw = JSON.stringify({
-    "user_app_id": {
-        "user_id": USER_ID,
-        "app_id": APP_ID
-    },
-    "inputs": [
-        {
-            "data": {
-                "image": {
-                    "url": IMAGE_URL
-                    // "base64": IMAGE_BYTES_STRING
-                }
-            }
-        }
-    ]
-});
-
-const requestOptions = {
-    method: 'POST',
-    headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Key ' + PAT
-    },
-    body: raw
-};
-
-
-
+const initialState = {
+  input: '',
+  imageUrl: '',
+  box: {},
+  route: 'sign-in',
+  isSignedIn: false,
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined: ''
+  }
+}
 
 class App extends React.Component {
   constructor() {
     super();
-    this.state = {
-      input: '',
-      imageUrl: '',
-      box: {},
-      route: 'sign-in',
-      isSignedIn: false
-    }
+    this.state = initialState;
   }
 
 
+  loadUser = (data) => {
+    this.setState({
+        user: {
+          id: data.id,
+          name: data.name,
+          email: data.email,
+          entries: data.entries,
+          joined: data.joined
+        }
+    })
+  }
+
   calculateFaceLocation = (data) => {
+    console.log(data);
+
     const personsFace = data.outputs[0].data.regions[0].region_info.bounding_box;
     const image = document.getElementById('inputImage');
     const width = Number(image.width); // 500 px
@@ -93,87 +68,55 @@ class App extends React.Component {
     console.log(event.target.value);
     this.setState({ input: event.target.value })
   }
-  
-  onButtonSubmit = () => { 
-    this.setState({ imageUrl: this.state.input})
 
-    // app.models.predict('face-detection', this.state.input)
-    // .then(response => { 
-    //   console.log('hi', response)
-    //   // if (response) {
-    //   //   fetch('http://localhost:3000/image', {
-    //   //     method: 'put',
-    //   //     headers: {'Content-Type': 'application/json'},
-    //   //     body: JSON.stringify({
-    //   //       id: this.state.user.id
-    //   //     })
-    //   //   })
-    //   //     .then(response => response.json())
-    //   //     .then(count => {
-    //   //       this.setState(Object.assign(this.state.user, { entries: count}))
-    //   //     })
+  onButtonSubmit = () => {
+    this.setState({ imageUrl: this.state.input })
 
-    //   // }
-
-
-    // })
-
-    // fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/outputs/", requestOptions)
-    // .then((response) => {
-    //   response.text();
-    //   console.log(response.text());
-    // })
-    // .then(result => console.log(result))
-    // .catch(error => console.log('error', error));
-
-
-
-    // fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VERSION_ID + "/outputs", requestOptions)
-    // .then(response => response.json())
-    // .then(result => {
-
-    //     const regions = result.outputs[0].data.regions;
-
-    //     regions.forEach(region => {
-    //         // Accessing and rounding the bounding box values
-    //         const boundingBox = region.region_info.bounding_box;
-    //         const topRow = boundingBox.top_row.toFixed(3);
-    //         const leftCol = boundingBox.left_col.toFixed(3);
-    //         const bottomRow = boundingBox.bottom_row.toFixed(3);
-    //         const rightCol = boundingBox.right_col.toFixed(3);
-
-    //         region.data.concepts.forEach(concept => {
-    //             // Accessing and rounding the concept value
-    //             const name = concept.name;
-    //             const value = concept.value.toFixed(4);
-
-    //             console.log(`${name}: ${value} BBox: ${topRow}, ${leftCol}, ${bottomRow}, ${rightCol}`);
-                
-    //         });
-    //     });
-
-    // })
-    // .catch(error => console.log('error', error));
-
-    fetch("https://api.clarifai.com/v2/models/" + "face-detection" + "/outputs", requestOptions)
-    .then(response => response.json())
-    .then((response) => {
-      console.log('hi', response);
-      console.log(response.text());
+    fetch('http://localhost:3000/imageUrl', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+          input: this.state.input
+      })
     })
-    // .catch(error => console.log('error', error));
+      .then(response => response.json())
+      .then(response => {
+        console.log('MADE IT INTO .then(count => ...)', response);
 
+        if (response) {
+          fetch('http://localhost:3000/image', {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              id: this.state.user.id
+            })
+          })
+            .then(response => response.json())
+            .then(count => {
+              this.setState(Object.assign(this.state.user, { entries: count }))
+            })
+            .catch(console.log)
+        }
+
+        this.displayFaceBox(this.calculateFaceLocation(response));
+
+      })
+      .catch(err => console.log('Error with /image route', err));
   }
 
   onRouteChange = (route) => {
+
+    console.log("From App.js:", route);
+
     // Update isSignedIn states.
     if (route === 'sign-out') {
-      this.setState({ isSignedIn: false})
+      // this.setState({isSignedIn: false})
+      this.setState(initialState);
     } else if (route === 'home') {
-      this.setState({ isSignedIn: true})
+      this.setState({isSignedIn: true});
     }
-    this.setState({ route: route });
-  }     
+    this.setState({route: route});
+  }
 
 
   render() {
@@ -182,24 +125,36 @@ class App extends React.Component {
     return (
       <div className='App'>
         <ParticlesBg color='#ff0000' type='cobweb' bg={true} />
-        <Navigation 
+        <Navigation
           isSignedIn={isSignedIn}
           onRouteChange={this.onRouteChange}/>
         { route === 'home'
           ? <div>
               <Logo />
 
-              <Rank />
-              <ImageLinkForm 
-                onInputBoxChange={box} 
+              <Rank
+                name={this.state.user.name}
+                entries={this.state.user.entries}
+              />
+              <ImageLinkForm
+                onInputBoxChange={this.onInputBoxChange}
                 onButtonSubmit={this.onButtonSubmit}
                 />
-              <FaceRecognition box={box} imageUrl={imageUrl} />
+              <FaceRecognition
+                box={box}
+                imageUrl={imageUrl}
+              />
             </div>
           : (
             route === 'sign-in'
-            ? <Signin onRouteChange={this.onRouteChange}/>  
-            : <Register onRouteChange={this.onRouteChange}/>
+            ? <Signin
+                loadUser={this.loadUser}
+                onRouteChange={this.onRouteChange}
+              />
+            : <Register
+                loadUser={this.loadUser}
+                onRouteChange={this.onRouteChange}
+              />
           )
         }
 
