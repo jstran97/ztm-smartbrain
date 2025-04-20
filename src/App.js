@@ -124,7 +124,7 @@ class App extends React.Component {
 
     return (
       <div className='App'>
-        <ParticlesBg color='#ff0000' type='cobweb' bg={true} />
+        <ParticlesBg color='##FFFEFE' type='cobweb' bg={true} />
         <Navigation
           isSignedIn={isSignedIn}
           onRouteChange={this.onRouteChange}/>
