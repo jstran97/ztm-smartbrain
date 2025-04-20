@@ -123,7 +123,7 @@ class App extends React.Component {
     const { isSignedIn, imageUrl, route, box } = this.state;
 
     let config = {
-      num: [4, 7],
+      num: [3, 10],
       rps: 0.1,
       radius: [5, 40],
       life: [1.5, 3],
@@ -132,7 +132,7 @@ class App extends React.Component {
       alpha: [0.6, 0],
       scale: [.1, 0.4],
       position: "all",
-      color: ["random", "#FFFEFE"],
+      color: ["random", "#FF0000"],
       cross: "dead",
       // emitter: "follow",
       random: 1
@@ -145,8 +145,8 @@ class App extends React.Component {
           ctx.rect(
             particle.p.x,
             particle.p.y,
-            particle.radius * 2,
-            particle.radius * 2
+            particle.radius * 4,
+            particle.radius * 4
           );
           ctx.fillStyle = particle.color;
           ctx.fill();
