@@ -1,6 +1,6 @@
 # ZTM Academy - Final Project: SmartBrain Front-End
 
-The web application's front-end was built with React.js and a Face Detection Model from Clarifai API. The front-end consists of a user registration, login (sign-in), and home page. Once the user is logged in, the user can submit image URLs and Clarifai API will then send a response with the detected human face. Each photo submission increases the entry count number for the currently logged-in user.
+The web application's front-end was built with React.js and a Face Detection API from Clarifai. The front-end consists of a user registration, login (sign-in), and home page. Once the user is logged in, the user can submit image URLs and Clarifai's API will then send a response with the detected human face. Each photo submission increases the entry count number for the currently logged-in user.
 
 # Getting Started:
 1. Clone this repo
