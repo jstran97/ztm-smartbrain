@@ -131,7 +131,7 @@ class App extends React.Component {
       tha: [-40, 40],
       alpha: [0.6, 0],
       scale: [.1, 0.4],
-      position: "all",
+      position: "center",
       color: ["random", "#FF0000"],
       cross: "dead",
       // emitter: "follow",
