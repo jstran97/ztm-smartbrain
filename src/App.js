@@ -131,11 +131,11 @@ class App extends React.Component {
       tha: [-40, 40],
       alpha: [0.6, 0],
       scale: [.1, 0.4],
-      position: "center",
+      position: "all",
       color: ["random", "#FF0000"],
       cross: "dead",
       // emitter: "follow",
-      random: 1
+      random: 15
     };
 
     if (Math.random() > 0.85) {
