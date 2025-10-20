@@ -72,7 +72,7 @@ class App extends React.Component {
   onButtonSubmit = () => {
     this.setState({ imageUrl: this.state.input })
 
-    fetch('https://ztm-smartbrain-api-d7vc.onrender.com/imageUrl', {
+    fetch('https://ztm-smartbrain-api-fl94.onrender.com/imageUrl', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -84,7 +84,7 @@ class App extends React.Component {
         console.log('MADE IT INTO .then(count => ...)', response);
 
         if (response) {
-          fetch('https://ztm-smartbrain-api-d7vc.onrender.com/image', {
+          fetch('https://ztm-smartbrain-api-fl94.onrender.com/image', {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
