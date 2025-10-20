@@ -30,7 +30,7 @@ class Register extends React.Component {
         console.log('this.state.password:', this.state.password);
         console.log('this.state.name:', this.state.name);
 
-        fetch('https://ztm-smartbrain-api-d7vc.onrender.com/register', {
+        fetch('https://ztm-smartbrain-api-fl94.onrender.com/register', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
